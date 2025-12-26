@@ -2,26 +2,71 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_log.h"
+#include "led_strip.h"
 
-// Tag identyfikujący logi
-static const char *TAG = "APP_MAIN";
+// KONFIGURACJA
+#define BLINK_GPIO  13       // Pin danych (DIN)
+#define LED_COUNT   60        // Ile diod wlaczamy (bezpiecznie dla USB!)
+
+static const char *TAG = "SMART_LIGHT";
+static led_strip_handle_t led_strip; // Uchwyt do naszej tasmy
+
+// Funkcja konfigurujaca tasme
+void configure_led(void)
+{
+    // 1. Konfiguracja pinu RMT (to ten mechanizm sprzetowy)
+    led_strip_config_t strip_config = {
+        .strip_gpio_num = BLINK_GPIO,
+        .max_leds = LED_COUNT, // Max liczba diod
+        .led_pixel_format = LED_PIXEL_FORMAT_GRBW, // SK6812 zazwyczaj ma GRB
+        .led_model = LED_MODEL_SK6812, // Dedykowany model
+        .flags.invert_out = false,
+    };
+
+    // 2. Konfiguracja RMT (Remote Control Transceiver)
+    led_strip_rmt_config_t rmt_config = {
+        .resolution_hz = 10 * 1000 * 1000, // 10MHz
+        .flags.with_dma = false,
+    };
+
+    // 3. Instalacja sterownika
+    ESP_ERROR_CHECK(led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip));
+    ESP_LOGI(TAG, "Tasma LED skonfigurowana na pinie %d", BLINK_GPIO);
+}
 
 void app_main(void)
 {
-    // Ustawiam poziom logowania tylko dla mojego modułu
-    esp_log_level_set(TAG, ESP_LOG_INFO);
+    configure_led();
+    ESP_LOGI(TAG, "Startujemy test LED!");
 
-    ESP_LOGI(TAG, "=== Start Systemu PPN_SmartLight ===");
-    ESP_LOGI(TAG, "Wersja: MVP - GPIO Mode");
-
-    int counter = 0;
-
-    // TODO: W przyszłości przeniose to do osobnego Taska FreeRTOS (xTaskCreate)
-    // Na razie testuja czy procesor żyje.
     while (1) {
-        ESP_LOGI(TAG, "System dziala (Heartbeat). Licznik: %d", counter++);
-        
-        // Czekaj 1000ms (1 sekunda) - to jest nieblokujące dla CPU
+        // --- CZERWONY ---
+        ESP_LOGI(TAG, "Kolor: CZERWONY");
+        for (int i = 0; i < LED_COUNT; i++) {
+            // Ustaw diode i: Red=20, Green=0, Blue=0, White=0 (oszczedzamy prad, jasnosc 20/255)
+            led_strip_set_pixel(led_strip, i, 20, 0, 0); 
+        }
+        led_strip_refresh(led_strip); // Wyslij dane do paska
         vTaskDelay(pdMS_TO_TICKS(1000));
+
+        // --- ZIELONY ---
+        ESP_LOGI(TAG, "Kolor: ZIELONY");
+        for (int i = 0; i < LED_COUNT; i++) {
+            led_strip_set_pixel(led_strip, i, 0, 20, 0);
+        }
+        led_strip_refresh(led_strip);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+
+        // --- NIEBIESKI ---
+        ESP_LOGI(TAG, "Kolor: NIEBIESKI");
+        for (int i = 0; i < LED_COUNT; i++) {
+            led_strip_set_pixel(led_strip, i, 0, 0, 20);
+        }
+        led_strip_refresh(led_strip);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        
+        // --- WYLACZ ---
+        led_strip_clear(led_strip);
+        vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
