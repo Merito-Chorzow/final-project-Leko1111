@@ -56,3 +56,15 @@ Rozwiązanie: Manualne wymuszenie trybu Download Mode poprzez przytrzymanie przy
 
 Weryfikacja: Po poprawnym wgraniu wsadu (Flash), uruchomiono monitor portu szeregowego (Monitor). Potwierdzono poprawne działanie pętli głównej app_main poprzez odczyt logów systemowych ("Licznik: ...").
 
+**Data:** 26.12.2025
+**Status:** Sterowanie oświetleniem gotowe.
+
+**Wykonane prace:**
+1. Podłączono taśmę LED SK6812 (RGBW) do ESP32 (GPIO 13).
+2. Zainstalowano komponent `led_strip` (wersja manualna w folderze `components`, ze względu na problemy z siecią).
+3. Napisano sterownik wykorzystujący sprzętowy moduł RMT w ESP32.
+4. Skorygowano format pikseli z `GRB` na `GRBW` (naprawa błędu z przesunięciem kolorów).
+
+**Efekt:**
+Taśma świeci poprawnie, obsługuje kanał biały i kolory.
+Gotowe do integracji z czujnikiem obecności.
