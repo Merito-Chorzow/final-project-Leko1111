@@ -52,7 +52,7 @@ Po poprawnym wgraniu programu monitor portu szeregowego pokazywał działającą
 - Zasilanie: 5V z płytki.
 
 ### Kalibracja sensora
-- Ograniczono zasięg detekcji do ~1,5 m (Gate 2), aby uniknąć fałszywych wykryć od ścian lub mebli.  
+- Ograniczono zasięg detekcji do ~0,2m, aby uniknąć fałszywych wykryć od ścian lub mebli oraz ograniczyć pole robocze wykonywania projektu.  
 - Ustawiono czułość na wykrywanie ruchów drobnych (np. ręka, oddech).  
 
 ### Algorytmika oświetlenia

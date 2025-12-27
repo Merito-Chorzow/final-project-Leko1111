@@ -21,7 +21,7 @@ Projekt semestralny: Sterownik oświetlenia schodowego/korytarzowego z detekcją
 * **Model:** 2x HLK-LD2410B (24GHz)
 * **Tryb pracy:** GPIO Output (High/Low) z aktywnym Pull-Down.
 * **Konfiguracja (via HLKRadarTool App):**
-  - **Zasięg (Gate):** Ograniczony do bramki nr 2 (ok. 1.5m) w celu eliminacji fałszywych odbić od ścian.
+  - **Zasięg (Gate):** Zmieniono rozdzielczość detekcji (Detection Resolution) na 0.2m. Radar działa w trybie bliskiego zasięgu (Gesture Mode), ignorując obiekty oddalone o więcej niż 20-30 cm.
   - **Czułość:** Dostosowana do wykrywania mikroruchów (oddech/siedzenie).
   - **Unmanned Duration:** 5s (sprzętowe podtrzymanie stanu wysokiego).
 * **Pinout:**

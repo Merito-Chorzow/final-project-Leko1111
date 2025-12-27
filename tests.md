@@ -24,7 +24,7 @@ W fazie budowy prototypu wykonano następujące testy weryfikacyjne:
 | Moduł | Test | Wynik / Obserwacje |
 | :--- | :--- | :--- |
 | **LED Driver** | Obsługa barw RGBW | **Pozytywny.** Początkowo zaobserwowano błędne mapowanie kolorów (biblioteka oczekiwała 3 bajtów RGB, pasek wymagał 4 bajtów RGBW). Skorygowano funkcję sterującą RMT. |
-| **Radar LD2410** | Kalibracja zasięgu | **Pozytywny.** Domyślny zasięg (6m) powodował wykrywanie ścian. W aplikacji HLKRadarTool ograniczono `Moving Gate` do wartości 2 (ok. 1.5m), co wyeliminowało fałszywe wzbudzenia. |
+| **Radar LD2410** | Kalibracja zasięgu | **Pozytywny.** Domyślny zasięg (6m) powodował wykrywanie ścian. W aplikacji HLKRadarTool ograniczono `Detection Accuracy` do wartości 0,2m, co wyeliminowało fałszywe wzbudzenia. |
 | **Integracja** | Single Radar Logic | **Pozytywny.** Potwierdzono działanie animacji "Wipe" przy użyciu jednego czujnika na GPIO 14. |
 
 
